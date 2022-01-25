@@ -4,7 +4,7 @@ function Employee(id, fullName, department, level, imgURL) {
     this.fullName = fullName;
     this.department = department;
     this.level = level;
-    //this.salary = salary;
+    this.salary = 0;
     this.imgURL = imgURL;
 }
 //calculating a random number between min and max values 
@@ -34,30 +34,37 @@ Employee.prototype.giveSalary = function () {
 // rendering on home 
 
 Employee.prototype.Render = function () {
-    document.write(`<p>${this.fullName}  Salary is   ${this.giveSalary()}</p>`);
+    document.write(`<p>${this.fullName}  Salary is   ${this.salary}</p>`);
 }
 
 
 //----------------------adding employees ------------------------
 
 let GhaziSamer = new Employee(1000, "Ghazi Samer", "Administration", "Senior", "shorturl.at/blotT");
+GhaziSamer.salary=GhaziSamer.giveSalary();
 GhaziSamer.Render();
 
 let LanaAli = new Employee(1001, "Lana Ali", "Finance", "Senior", " shorturl.at/blotT");
+LanaAli.salary=LanaAli.giveSalary();
 LanaAli.Render();
 
 let TamaraAyoub = new Employee(1002,"Tamara Ayoub", "Marketing", "Senior", "shorturl.at/blotT ");
+TamaraAyoub.salary=TamaraAyoub.giveSalary();
 TamaraAyoub.Render();
 
 let SafiWalid = new Employee(1003, "Safi Walid", "Administration", "Mid-Senior", "shorturl.at/blotT");
+SafiWalid.salary=SafiWalid.giveSalary();
 SafiWalid.Render();
 
 let OmarZaid = new Employee(1004, "Omar Zaid", "Development", "Senior", "shorturl.at/blotT");
+OmarZaid.salary=OmarZaid.giveSalary();
 OmarZaid.Render();
 
 let RanaSaleh = new Employee(1005, "Rana Saleh", "Development", "Junior", "shorturl.at/blotT");
+RanaSaleh.salary=RanaSaleh.giveSalary();
 RanaSaleh.Render();
 
 let HadiAhmad = new Employee(1006, "Hadi Ahmad", "Finance", "Mid-Senior", "shorturl.at/blotT");
+HadiAhmad.salary=HadiAhmad.giveSalary();
 HadiAhmad.Render();
 
