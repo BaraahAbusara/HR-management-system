@@ -2,6 +2,9 @@
 let employeeForm = document.getElementById('employeeForm');
 let employeesSection = document.getElementById('Employees');
 
+let allEmployees = []
+updateData();
+
 function Employee(fullName, department, level, imgURL) {
     this.id = 0;
     this.fullName = fullName;
@@ -15,7 +18,7 @@ function Employee(fullName, department, level, imgURL) {
 //calculating a random number between min and max values 
 Employee.prototype.calcSalary = function (min, max) {
     let salary = Math.floor(Math.random() * (max - min)) + min;
-    return (salary);   
+    return (salary);
 }
 
 //removing 7.5% from the salary 
@@ -33,38 +36,41 @@ Employee.prototype.giveSalary = function () {
     else
         salary = this.calcSalary(500, 1000);
 
-    this.salary=this.calcNetSalary(salary);
+    this.salary = this.calcNetSalary(salary);
+}
+//Create a function to generate a unique four digits employee id number.
+Employee.prototype.generateId = function () {
+
+    let id = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+    this.id = id;
 }
 // -------------rendering in home task 08  -------------
-Employee.prototype.render = function () {
+function render(allEmployees) {
 
-    let div = document.createElement('div');
-    employeesSection.appendChild(div);
+    employeesSection.innerHTML = '';
 
-    let img = document.createElement('img');
-    div.appendChild(img);
-    img.setAttribute('src',this.imgURL);
-    img.setAttribute('alt',this.fullName); 
+    for (let i = 0; i < allEmployees.length; i++) {
 
-    let h3 = document.createElement('h3');
-    div.appendChild(h3);
-    h3.textContent=`Name:${this.fullName} - ID : ${this.id}`;
+        let div = document.createElement('div');
+        employeesSection.appendChild(div);
 
-    let p = document.createElement('p');
-    div.appendChild(p);
-    p.textContent=`Deparment:${this.department} - Level:${this.level}`;
+        let img = document.createElement('img');
+        div.appendChild(img);
+        img.setAttribute('src', allEmployees[i].imgURL);
+        img.setAttribute('alt', allEmployees[i].fullName);
 
-    let h5 = document.createElement('h5');
-    div.appendChild(h5);
-    h5.textContent=this.salary; 
-    
-}
+        let h3 = document.createElement('h3');
+        div.appendChild(h3);
+        h3.textContent = `Name:${allEmployees[i].fullName} - ID : ${allEmployees[i].id}`;
 
-//Create a function to generate a unique four digits employee id number.
-Employee.prototype.generateId =function () {
+        let p = document.createElement('p');
+        div.appendChild(p);
+        p.textContent = `Deparment:${allEmployees[i].department} - Level:${allEmployees[i].level}`;
 
-let id = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
-this.id=id ;   
+        let h5 = document.createElement('h5');
+        div.appendChild(h5);
+        h5.textContent = allEmployees[i].salary;
+    }
 }
 
 function handelSubmit(event) {
@@ -74,12 +80,45 @@ function handelSubmit(event) {
     let fullName = event.target.fullName.value;
     let department = event.target.department.value;
     let level = event.target.level.value;
-    let imgURL= event.target.imgURL.value;
-   
+    let imgURL = event.target.imgURL.value;
+
     let newEmployee = new Employee(fullName, department, level, imgURL);
     newEmployee.generateId();
-    newEmployee.giveSalary(); 
-    newEmployee.render();
+    newEmployee.giveSalary();
+    allEmployees.push(newEmployee);
+    let jsonArr=jsonArray(allEmployees)
+    saveToLocalS(jsonArr);
+
+    render(readFromLocal());
+}
+
+function jsonArray(arr) {
+    let jsonArray = JSON.stringify(arr);
+    return jsonArray;
+}
+
+function saveToLocalS(jsonArray) {
+    localStorage.setItem('allEmployees',jsonArray);
+}
+
+function readFromLocal() {
+    let jsonArray = localStorage.getItem('allEmployees');
+    let arr = JSON.parse(jsonArray);
+    if (arr !== null)
+        return arr;
+    else
+        return [];
+
+}
+
+
+function updateData() {
+    if (allEmployees.length == 0) {
+        let arr = readFromLocal();
+        if (arr.length != 0)
+            allEmployees = arr;
+    }
+
 }
 
 // -------------rendering on home task 07  -------------
@@ -91,48 +130,51 @@ function handelSubmit(event) {
 
 //----------------------adding employees Task 07 ------------------------
 
-let GhaziSamer = new Employee( "Ghazi Samer", "Administration", "Senior",0); // having a problem with passing the picture path
+// {
+//     let GhaziSamer = new Employee("Ghazi Samer", "Administration", "Senior", 0);
 
-GhaziSamer.imgURL=`./assets/${GhaziSamer.name[0]}.jpg`
-GhaziSamer.giveSalary();
-GhaziSamer.generateId();
-GhaziSamer.render();
+//     GhaziSamer.imgURL = `./assets/${GhaziSamer.name[0]}.jpg`
+//     GhaziSamer.giveSalary();
+//     GhaziSamer.generateId();
+//     //GhaziSamer.render();
 
-let LanaAli = new Employee( "Lana Ali", "Finance", "Senior",0);
-LanaAli.imgURL=`./assets/${LanaAli.name[0]}.jpg`
-LanaAli.generateId(),
-LanaAli.giveSalary();
-LanaAli.render();              
+//     let LanaAli = new Employee("Lana Ali", "Finance", "Senior", 0);
+//     LanaAli.imgURL = `./assets/${LanaAli.name[0]}.jpg`
+//     LanaAli.generateId();
+//     LanaAli.giveSalary();
+//     //LanaAli.render();
 
-let TamaraAyoub = new Employee("Tamara Ayoub", "Marketing", "Senior",0);
-TamaraAyoub.imgURL=`./assets/${TamaraAyoub.name[0]}.jpg`
-TamaraAyoub.generateId(),
-TamaraAyoub.giveSalary();
-TamaraAyoub.render();
+//     let TamaraAyoub = new Employee("Tamara Ayoub", "Marketing", "Senior", 0);
+//     TamaraAyoub.imgURL = `./assets/${TamaraAyoub.name[0]}.jpg`
+//     TamaraAyoub.generateId();
+//     TamaraAyoub.giveSalary();
+//     //TamaraAyoub.render();
 
-let SafiWalid = new Employee( "Safi Walid", "Administration", "Mid-Senior",0);
-SafiWalid.imgURL=`./assets/${SafiWalid.name[0]}.jpg`
-SafiWalid.generateId(),
-SafiWalid.giveSalary();
-SafiWalid.render();
+//     let SafiWalid = new Employee("Safi Walid", "Administration", "Mid-Senior", 0);
+//     SafiWalid.imgURL = `./assets/${SafiWalid.name[0]}.jpg`
+//     SafiWalid.generateId();
+//     SafiWalid.giveSalary();
+//     //SafiWalid.render();
 
-let OmarZaid = new Employee( "Omar Zaid", "Development", "Senior",0 );
-OmarZaid.imgURL=`./assets/${OmarZaid.name[0]}.jpg`
-OmarZaid.generateId(),
-OmarZaid.giveSalary();
-OmarZaid.render();
+//     let OmarZaid = new Employee("Omar Zaid", "Development", "Senior", 0);
+//     OmarZaid.imgURL = `./assets/${OmarZaid.name[0]}.jpg`
+//     OmarZaid.generateId(),
+//         OmarZaid.giveSalary();
+//     //OmarZaid.render();
 
-let RanaSaleh = new Employee( "Rana Saleh", "Development", "Junior",0);
-RanaSaleh.imgURL=`./assets/${RanaSaleh.name[0]}.jpg`
-RanaSaleh.generateId(),
-RanaSaleh.giveSalary();
-RanaSaleh.render();
+//     let RanaSaleh = new Employee("Rana Saleh", "Development", "Junior", 0);
+//     RanaSaleh.imgURL = `./assets/${RanaSaleh.name[0]}.jpg`
+//     RanaSaleh.generateId(),
+//         RanaSaleh.giveSalary();
+//     //RanaSaleh.render();
 
-let HadiAhmad = new Employee( "Hadi Ahmad", "Finance", "Mid-Senior",0);
-HadiAhmad.imgURL=`./assets/${HadiAhmad.name[0]}.jpg`
-HadiAhmad.generateId(),
-HadiAhmad.giveSalary();
-HadiAhmad.render();
+//     let HadiAhmad = new Employee("Hadi Ahmad", "Finance", "Mid-Senior", 0);
+//     HadiAhmad.imgURL = `./assets/${HadiAhmad.name[0]}.jpg`
+//     HadiAhmad.generateId(),
+//         HadiAhmad.giveSalary();
+//     //HadiAhmad.render();
+// }
+render(readFromLocal());
 
 employeeForm.addEventListener('submit', handelSubmit);
 
