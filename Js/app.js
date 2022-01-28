@@ -36,7 +36,8 @@ Employee.prototype.giveSalary = function () {
     else
         salary = this.calcSalary(500, 1000);
 
-    this.salary = this.calcNetSalary(salary);
+    this.salary = Math.ceil(this.calcNetSalary(salary));
+    
 }
 //Create a function to generate a unique four digits employee id number.
 Employee.prototype.generateId = function () {
