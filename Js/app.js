@@ -54,12 +54,13 @@ function render(allEmployees) {
 
         let div = document.createElement('div');
         employeesSection.appendChild(div);
+        div.setAttribute('class',"card");
 
         let img = document.createElement('img');
         div.appendChild(img);
         img.setAttribute('src', allEmployees[i].imgURL);
         img.setAttribute('alt', allEmployees[i].fullName);
-
+        
         let h3 = document.createElement('h3');
         div.appendChild(h3);
         h3.textContent = `Name:${allEmployees[i].fullName} - ID : ${allEmployees[i].id}`;
